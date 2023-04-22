@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-// dayjs.extend(duration);
+
 
 const cutText = (text: string, length: number) => {
   if (text.split(" ").length > 1) {
