@@ -1,31 +1,50 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
-    FlatList,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  FlatList,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import SparePart from "model/SparePart";
 import { RootStackParamList } from "../../App";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const spareparts: {
-  data: SparePart[];
-} = require("../../assets/spareparts.json");
+import ItemList from "./ItemList";
 
 const SpareList = () => {
   const navigation =
     useNavigation<NavigationProp<RootStackParamList, "SpareDetail">>();
   const [search, setSearch] = useState("");
+  const [items, setItems] = useState<SparePart[]>([]);
+  
 
-  const items = useCallback(() => filteredItem(),[spareparts])
+  const loadData = () => {
+    const path = `../../assets/spareparts.json`;
+    return new Promise<SparePart[]>((resolve, reject) => {
+      try {
+        const json = require(path);
+        resolve(json.data);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
 
-  const filteredItem = () => {
-    
-    return spareparts.data
+  const handleLoadMore = async () => {
+    const newData = await loadData(); 
+    setItems((prevData) => [...prevData, ...newData]); 
+  };
+
+  useEffect(() => {
+    setItems([]);
+    filteredItem().then((data) => setItems(data));
+  }, [search]);
+
+  const filteredItem = async () => {
+    const data = await loadData();
+    return data
       .filter((item) => {
         const temp = search?.toLowerCase();
         const result =
@@ -38,8 +57,7 @@ const SpareList = () => {
 
         return result;
       })
-      .slice(0, 250);
-      
+      .slice(0, 10);
   };
   return (
     <SafeAreaView>
@@ -52,51 +70,36 @@ const SpareList = () => {
             onChangeText={setSearch}
             value={search}
           ></TextInput>
-          <TouchableOpacity onPress={() => setSearch("")} className="absolute top-2 right-4">
-            <Text className=" text-zinc-600 text-lg w-4">
-              x
-            </Text>
+          <TouchableOpacity
+            onPress={() => setSearch("")}
+            className="absolute top-2 right-4"
+          >
+            <Text className=" text-zinc-600 text-lg w-4">x</Text>
           </TouchableOpacity>
         </View>
 
-        {items().length === 0 && (
+        {items.length === 0 && (
           <View className="flex flex-col justify-center  items-center h-screen  ">
             <Text className="text-4xl font-semibold mb-48">No Data...</Text>
           </View>
         )}
         <FlatList
-          data={items()}
+          onEndReachedThreshold={0.1}
+          onEndReached={handleLoadMore}
+          data={items}
+          initialNumToRender={10}
           showsVerticalScrollIndicator={false}
           className="mt-1"
           overScrollMode={"never"}
           contentContainerStyle={{ paddingBottom: 150 }}
-          renderItem={({ item, index }) => {
-            return (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("SpareDetail", { sparepart: item })
-                }
-              >
-                <View className="py-2 px-4 bg-white mt-2 space-y-1 rounded-lg ">
-                  <View className="flex flex-row items-center justify-between">
-                    <Text className="font-semibold text-lg text-black">
-                      {item.MATERIAL_NO}
-                    </Text>
-                    <Text className="text-xs text-slate-400">
-                      {item.TIPE_PART}
-                    </Text>
-                  </View>
-                  <View className="flex flex-row items-center justify-between">
-                    <Text className="text-xs ">{item.DESCRIPTION}</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            );
-          }}
+          renderItem={({ item, index }) => (
+            <ItemList item={item} index={index} navigation={navigation} />
+          )}
         ></FlatList>
       </View>
     </SafeAreaView>
   );
 };
+
 
 export default SpareList;
