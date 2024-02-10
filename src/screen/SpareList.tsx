@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import json from "../../assets/spareparts.json"
 
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import SparePart from "model/SparePart";
@@ -18,14 +19,16 @@ const SpareList = () => {
     useNavigation<NavigationProp<RootStackParamList, "SpareDetail">>();
   const [search, setSearch] = useState("");
   const [items, setItems] = useState<SparePart[]>([]);
-  
+
 
   const loadData = () => {
-    const path = `../../assets/spareparts.json`;
+
     return new Promise<SparePart[]>((resolve, reject) => {
       try {
-        const json = require(path);
-        resolve(json.data);
+        // @ts-ignore
+        resolve(json?.data)
+        // resolve(json)
+        // resolve(json?.data);
       } catch (error) {
         reject(error);
       }
@@ -33,8 +36,8 @@ const SpareList = () => {
   };
 
   const handleLoadMore = async () => {
-    const newData = await loadData(); 
-    setItems((prevData) => [...prevData, ...newData]); 
+    const newData = await loadData();
+    setItems((prevData) => [...prevData, ...newData]);
   };
 
   useEffect(() => {

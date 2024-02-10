@@ -47,6 +47,10 @@ const SpareDetail = ({ route }: Props) => {
               ></Item>
               <Item title="Tipe Part" description={sparepart.TIPE_PART}></Item>
               <Item
+                  title="Kode Mobil"
+                  description={sparepart.KODE_MOBIL}
+              ></Item>
+              <Item
                 title="Tipe Mobile"
                 description={sparepart.TIPE_MOBIL}
               ></Item>

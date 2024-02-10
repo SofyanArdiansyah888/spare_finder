@@ -5,6 +5,7 @@ export default interface SparePart  {
     PROD_HIERARCHY: string;
     TIPE_PART: string;
     TIPE_MOBIL: string;
+    KODE_MOBIL: string;
     GRUP_TIPE_MOBIL: string;
     RUN_IN_RUN_OUT: string;
     OLI_ACC_PART: string;
