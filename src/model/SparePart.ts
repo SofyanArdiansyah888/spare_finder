@@ -4,6 +4,7 @@ export default interface SparePart  {
     M_GROUP: string;
     PROD_HIERARCHY: string;
     TIPE_PART: string;
+    KODE_MOBIL: string;
     TIPE_MOBIL: string;
     GRUP_TIPE_MOBIL: string;
     RUN_IN_RUN_OUT: string;
@@ -15,4 +16,5 @@ export default interface SparePart  {
     PR_GRP: string;
     VALID_FROM: string;
     VALID_TO: string;
+    RETAIL_PRICE_BEFORE: string;
   };

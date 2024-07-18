@@ -12,7 +12,7 @@ import SparePart from "model/SparePart";
 import { RootStackParamList } from "../../App";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ItemList from "./ItemList";
-
+import sparePartsData from '../../assets/spareparts.json';
 const SpareList = () => {
   const navigation =
     useNavigation<NavigationProp<RootStackParamList, "SpareDetail">>();
@@ -24,8 +24,8 @@ const SpareList = () => {
     const path = `../../assets/spareparts.json`;
     return new Promise<SparePart[]>((resolve, reject) => {
       try {
-        const json = require(path);
-        resolve(json.data);
+        // @ts-ignore
+        resolve(sparePartsData?.data as SparePart[]);
       } catch (error) {
         reject(error);
       }
@@ -45,7 +45,7 @@ const SpareList = () => {
   const filteredItem = async () => {
     const data = await loadData();
     return data
-      .filter((item) => {
+      ?.filter((item) => {
         const temp = search?.toLowerCase();
         const result =
           item.MATERIAL_NO?.toLowerCase().indexOf(temp) > -1 ||

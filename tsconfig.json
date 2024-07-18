@@ -10,6 +10,11 @@
     "baseUrl": "./src",
     "paths": {
       "@/src" : ["src/*"]
+    },
+    "compilerOptions": {
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      // other options
     }
   },
   "extends": "expo/tsconfig.base"
