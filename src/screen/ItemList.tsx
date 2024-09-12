@@ -23,7 +23,7 @@ class ItemList extends React.PureComponent<Props> {
             <Text className="font-semibold text-lg text-black">
               {item.MATERIAL_NO}
             </Text>
-            <Text className="text-xs text-slate-400">{item.TIPE_PART}</Text>
+            <Text className="text-xs text-slate-400">{item.TIPE_MOBIL}</Text>
           </View>
           <View className="flex flex-row items-center justify-between">
             <Text className="text-xs ">{item.DESCRIPTION}</Text>
