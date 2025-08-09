@@ -83,6 +83,7 @@ const SpareDetail = ({route}: Props) => {
                                 description={sparepart.VALID_FROM}
                             ></Item>
                             <Item title="Valid To" description={sparepart.VALID_TO}></Item>
+                            <Item title="Check" description={sparepart.CHECK}></Item>
                             <Item title="Retail Price Before" description={sparepart.RETAIL_PRICE_BEFORE}></Item>
                         </View>
                     </View>

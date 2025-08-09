@@ -17,4 +17,5 @@ export default interface SparePart  {
     VALID_FROM: string;
     VALID_TO: string;
     RETAIL_PRICE_BEFORE: string;
+    CHECK: string;
   };
